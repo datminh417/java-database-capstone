@@ -1,0 +1,30 @@
+# TIÊU CHÍ 2: Tự động kích hoạt trên push hoặc pull_request
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Bước 1: Checkout code
+    - uses: actions/checkout@v4
+    
+    # TIÊU CHÍ 1: Cấu hình Java
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: 'maven'
+
+    # TIÊU CHÍ 1: Biên dịch bằng Maven
+    - name: Build with Maven
+      run: mvn -B compile --file pom.xml
+      
+    # Lưu ý: 'mvn compile' chỉ biên dịch. Nếu cần đóng gói, dùng 'mvn package'
